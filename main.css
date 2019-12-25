@@ -6,6 +6,7 @@
     text-align: center;
     width: 300px;
     font-size: 60px;
+    /* The left and right are used to center the div horisontally. */
     left: 0;
     right: 0;
     border-radius: 20px;

@@ -1,6 +1,8 @@
+/*
+ * Main inject script for SpeedMe addon.
+ */
 
-// DEBUG: <div id="speedifyMain" style="position: fixed; z-index: 10000; top: 75px; /*! width: 100%; */ text-align: center;border: 3px solid #eaeaea;/*! left: 50%; */color: white;background: #828282E3;padding: 20px;font-size: 60px;margin: auto;left: 0;right: 0;width: 300px;border-radius: 20px;">1.75x</div>
-
+ // The user's settings for the app.
 let userSettings = {
     speed: 1,
     increment: 0.25,
@@ -8,40 +10,51 @@ let userSettings = {
     fastKey: '=',
 }
 
-let box;
+let box; // This is the fixed DOM element to display the current speed.
 
+// This is object with the timers for displaying the box for a certain amount of time.
 let timers = {
     wait: null,
     fade: null,
 };
 
-
+/*
+ * Function gets called when a key is pressed.
+ */
 function keyDown(event) {
 
-    let eventTriggered = false;
+    let eventTriggered = false; // Becomes true if speed gets updated.
 
+    // If video is slowed down.
     if (event.key === userSettings.slowKey && userSettings.speed > 0) {
         userSettings.speed -= userSettings.increment;
         eventTriggered = true;
     }
 
+    // If video is sped up.
     if (event.key === userSettings.fastKey && userSettings.speed < 16) {
         userSettings.speed += userSettings.increment;
         eventTriggered = true;
     }
 
+    // Update the speed if a valid key was pressed.
     if (eventTriggered) {
         updateSpeed();
     }
     
 }
 
+/*
+ * Function handles fading out animation and will get called at intervals.
+ */
 function fadeOut() {
 
+    // If the opacity is not set then reset.
     if (!box.style.opacity) {
         box.style.opacity = 1;
     }
 
+    // This will be like a while loop
     if (box.style.opacity > 0) {
         box.style.opacity -= 0.2;
     } else {
@@ -52,36 +65,44 @@ function fadeOut() {
 
 }
 
-function intervalSet() {
-    timers.fade = setInterval(fadeOut, 100);
-}
-
+/*
+ * Function will update and display the updated playback speed.
+ */
 function updateSpeed() {
     
     // Clear any callbacks scheduled.
     clearTimeout(timers.timeout);
     clearInterval(timers.fade);
-    // Set the timer for the box to be displayed.
-    timers.wait = setTimeout(intervalSet , 100);
+    // Set the timer for the box to be fadedOut.
+    timers.wait = setTimeout(() => {
+        timers.fade = setInterval(fadeOut, 100);
+    } , 100);
 
     box.innerText = userSettings.speed + 'x'; // Updates box's information.
-    // Updates video speed to the changed speed.
+    // Updates the youtube video speed.
     document.getElementsByTagName('video')[0].playbackRate = userSettings.speed;
 
+    // Displays the box.
     box.style.display = "inline";
     box.style.opacity = 1;
     
 }
 
+/*
+ * Function gets called when the page gets loaded.
+ */
 function docStartup () {
 
+    // Add key press event listener.
     document.addEventListener('keydown', keyDown);
 
+    // Create the div.
     box = document.createElement ("div");
     box.id = "speedify";
     box.style.display = "none";
     box.innerText = '1x';
-    
+
+    // Prepend the box to the body.
     document.body.prepend(box);
 }
 
