@@ -76,7 +76,7 @@ function updateSpeed() {
     // Set the timer for the box to be fadedOut.
     timers.wait = setTimeout(() => {
         timers.fade = setInterval(fadeOut, 100);
-    } , 100);
+    }, 100);
 
     box.innerText = userSettings.speed + 'x'; // Updates box's information.
     // Updates the youtube video speed.
