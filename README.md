@@ -9,6 +9,7 @@ SpeedMe is a light weight browser extention that allows for quick, easy and intu
 ![Screenshot 2](https://addons.cdn.mozilla.net/user-media/previews/full/229/229998.png?modified=1577318834)
 
 </details>
+
 ## Installation
 
 So far the extention is only available for firefox, get the add-on at the [firefox add-on page](https://addons.mozilla.org/en-US/firefox/addon/speedme/)
